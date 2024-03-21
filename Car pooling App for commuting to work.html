@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carpooling App</title>
+    <style>
+        /* Your existing CSS */
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+body{
+    background-color: lightcoral;
+}
+h1{
+    background-color: red;
+    color: lightblue;
+    text-align: center;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+}
+
+header nav {
+    float: right;
+}
+
+header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+header nav ul li {
+    display: inline;
+    margin-left: 20px;
+    color: lightblue;
+}
+
+header nav ul li a {
+    color: lightblue;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header nav ul li a:hover {
+    color: lightseagreen;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Carpooling App</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" id="login-link">Login</a></li>
+                    <li><a href="#" id="logout-link" class="hidden">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div id="login-container">
+            <h2>Login</h2>
+            <form id="login-form">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        <div id="carpool-container" class="hidden">
+            <!-- Carpool information will be displayed here -->
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const loginForm = document.getElementById('login-form');
+    const carpoolContainer = document.getElementById('carpool-container');
+    const loginLink = document.getElementById('login-link');
+    const logoutLink = document.getElementById('logout-link');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+
+    // Dummy data for demonstration
+    const users = [
+        { username: 'user1', password: 'password1' },
+        { username: 'user2', password: 'password2' }
+    ];
+    const carpools = [
+        { driver: 'user1', departure: '8:00 AM', destination: 'Office', availableSeats: 3 },
+        { driver: 'user2', departure: '7:30 AM', destination: 'Office', availableSeats: 2 }
+    ];
+
+    // Function to handle login
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+        const user = users.find(u => u.username === username && u.password === password);
+        if (user) {
+            displayCarpools();
+            loginForm.reset();
+            loginLink.classList.add('hidden');
+            logoutLink.classList.remove('hidden');
+        } else {
+            alert('Invalid username or password');
+        }
+    });
+
+    // Function to display carpools after login
+    function displayCarpools() {
+        carpoolContainer.innerHTML = '';
+        carpools.forEach(carpool => {
+            const carpoolElement = document.createElement('div');
+            carpoolElement.classList.add('carpool');
+            carpoolElement.innerHTML = `
+                <h3>Driver: ${carpool.driver}</h3>
+                <p>Departure Time: ${carpool.departure}</p>
+                <p>Destination: ${carpool.destination}</p>
+                <p>Available Seats: ${carpool.availableSeats}</p>
+                <button>Join Carpool</button>
+            `;
+            carpoolContainer.appendChild(carpoolElement);
+        });
+        carpoolContainer.classList.remove('hidden');
+    }
+
+    // Logout functionality
+    logoutLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        carpoolContainer.classList.add('hidden');
+        loginLink.classList.remove('hidden');
+        logoutLink.classList.add('hidden');
+    });
+});
+
+    </script>
+</body>
+</html>
